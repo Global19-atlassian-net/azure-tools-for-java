@@ -76,6 +76,15 @@ public abstract class WebAppBaseNode extends RefreshableNode implements Telemetr
         return super.getNodeActions();
     }
 
+    protected NodeActionListener createBackgroundActionListener(final String actionName, final Runnable runnable) {
+        return new NodeActionListener() {
+            @Override
+            protected void actionPerformed(NodeActionEvent e) {
+                AzureTaskManager.getInstance().runInBackground(new AzureTask(null, String.format("%s...", actionName), false, runnable));
+            }
+        };
+    }
+
     @Override
     public void renderNode(@NotNull WebAppBaseState state) {
         switch (state) {

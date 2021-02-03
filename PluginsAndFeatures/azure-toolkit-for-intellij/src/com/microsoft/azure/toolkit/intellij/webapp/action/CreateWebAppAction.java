@@ -35,7 +35,7 @@ import com.microsoft.azure.toolkit.intellij.webapp.WebAppCreationDialog;
 import com.microsoft.azure.toolkit.lib.common.handler.AzureExceptionHandler;
 import com.microsoft.azure.toolkit.lib.common.handler.AzureExceptionHandler.AzureExceptionAction;
 import com.microsoft.azure.toolkit.lib.common.operation.AzureOperation;
-import com.microsoft.azure.toolkit.lib.common.operation.IAzureOperationTitle;
+import com.microsoft.azure.toolkit.lib.common.operation.AzureOperationBundle;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTask;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTaskManager;
 import com.microsoft.azure.toolkit.lib.webapp.WebAppConfig;
@@ -78,7 +78,7 @@ public class CreateWebAppAction extends NodeActionListener {
     }
 
     @Override
-    @AzureOperation(name = "webapp.create", type = AzureOperation.Type.ACTION)
+    @AzureOperation(name = "create web app", type = AzureOperation.Type.ACTION)
     public void actionPerformed(NodeActionEvent e) {
         final Project project = (Project) webappModule.getProject();
         AzureSignInAction.doSignIn(AuthMethodManager.getInstance(), project).subscribe((isLoggedIn) -> {
@@ -88,7 +88,7 @@ public class CreateWebAppAction extends NodeActionListener {
         });
     }
 
-    @AzureOperation(name = "webapp.open_creation_dialog", type = AzureOperation.Type.ACTION)
+    @AzureOperation(name = "open web app creation dialog", type = AzureOperation.Type.ACTION)
     private void openDialog(final Project project, @Nullable final WebAppConfig data) {
         final WebAppCreationDialog dialog = new WebAppCreationDialog(project);
         if (Objects.nonNull(data)) {
@@ -112,10 +112,9 @@ public class CreateWebAppAction extends NodeActionListener {
         dialog.show();
     }
 
-    @AzureOperation(name = "webapp.create_detail", params = {"$config.getName()"}, type = AzureOperation.Type.ACTION)
+    @AzureOperation(name = "create web app", type = AzureOperation.Type.ACTION)
     private Single<WebApp> createWebApp(final WebAppConfig config) {
-        final IAzureOperationTitle title = title("webapp.create_detail", config.getName());
-        final AzureTask<WebApp> task = new AzureTask<>(null, title, false, () -> {
+        final AzureTask<WebApp> task = new AzureTask<>(null, title("webapp.create.title", config.getName()), false, () -> {
             final ProgressIndicator indicator = ProgressManager.getInstance().getProgressIndicator();
             indicator.setIndeterminate(true);
             return webappService.createWebApp(config);
@@ -126,10 +125,9 @@ public class CreateWebAppAction extends NodeActionListener {
         });
     }
 
-    @AzureOperation(name = "webapp.deploy_artifact", params = {"$webapp.name()"}, type = AzureOperation.Type.ACTION)
+    @AzureOperation(name = "deploy artifact to web app", type = AzureOperation.Type.ACTION)
     private void deploy(final WebApp webapp, final Path application, final Project project) {
-        final IAzureOperationTitle title = title("webapp.deploy_artifact", webapp.name());
-        final AzureTask<Void> task = new AzureTask<>(null, title, false, () -> {
+        final AzureTask<Void> task = new AzureTask<>(null, title("webapp.deploy.title", webapp.name()), false, () -> {
             ProgressManager.getInstance().getProgressIndicator().setIndeterminate(true);
             final RunProcessHandler processHandler = new RunProcessHandler();
             processHandler.addDefaultListener();
@@ -143,7 +141,7 @@ public class CreateWebAppAction extends NodeActionListener {
         }); // let root exception handler to show the error.
     }
 
-    @AzureOperation(name = "common|explorer.refresh", type = AzureOperation.Type.TASK)
+    @AzureOperation(name = "refresh azure explorer", type = AzureOperation.Type.TASK)
     private void refreshAzureExplorer(WebApp app) {
         AzureTaskManager.getInstance().runLater(() -> {
             if (AzureUIRefreshCore.listeners != null) {

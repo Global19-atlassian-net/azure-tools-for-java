@@ -76,7 +76,7 @@ public class ApplicationInsightsPanel extends JPanel {
     }
 
     @AzureOperation(
-        name = "ai.list.subscription",
+        name = "load application insights of subscription[%s]",
         params = {"$subscriptionId"},
         type = AzureOperation.Type.SERVICE
     )

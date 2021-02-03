@@ -37,8 +37,6 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.storage.Kind;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.azure.toolkit.lib.common.operation.AzureOperationBundle;
-import com.microsoft.azure.toolkit.lib.common.operation.IAzureOperationTitle;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTask;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTaskManager;
 import com.microsoft.azuretools.authmanage.AuthMethodManager;
@@ -215,8 +213,7 @@ public class SettingsStep extends AzureWizardStep<VMWizardModel> implements Tele
     }
 
     private void retrieveVirtualNetworks() {
-        final IAzureOperationTitle title = AzureOperationBundle.title("vm.list_virtual_networks");
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Loading virtual networks...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             progressIndicator.setIndeterminate(true);
             if (virtualNetworks == null) {
@@ -327,8 +324,7 @@ public class SettingsStep extends AzureWizardStep<VMWizardModel> implements Tele
     }
 
     private void retrieveStorageAccounts() {
-        final IAzureOperationTitle title = AzureOperationBundle.title("vm.list_storage_accounts");
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Loading storage accounts...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             progressIndicator.setIndeterminate(true);
             if (storageAccounts == null) {
@@ -424,8 +420,7 @@ public class SettingsStep extends AzureWizardStep<VMWizardModel> implements Tele
     }
 
     private void retrievePublicIpAddresses() {
-        final IAzureOperationTitle title = AzureOperationBundle.title("vm.list_public_ips");
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Loading public ip addresses...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             progressIndicator.setIndeterminate(true);
             if (publicIpAddresses == null) {
@@ -502,8 +497,7 @@ public class SettingsStep extends AzureWizardStep<VMWizardModel> implements Tele
     }
 
     private void retrieveNetworkSecurityGroups() {
-        final IAzureOperationTitle title = AzureOperationBundle.title("vm.list_security_groups");
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Loading network security groups...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             progressIndicator.setIndeterminate(true);
             if (networkSecurityGroups == null) {
@@ -571,8 +565,7 @@ public class SettingsStep extends AzureWizardStep<VMWizardModel> implements Tele
     }
 
     private void retrieveAvailabilitySets() {
-        final IAzureOperationTitle title = AzureOperationBundle.title("vm.list_availability_sets");
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Loading availability sets...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             progressIndicator.setIndeterminate(true);
             if (availabilitySets == null) {
@@ -690,8 +683,7 @@ public class SettingsStep extends AzureWizardStep<VMWizardModel> implements Tele
         final boolean isNewResourceGroup = createNewRadioButton.isSelected();
         final String resourceGroupName = isNewResourceGroup ? resourceGrpField.getText() : resourceGrpCombo.getSelectedItem().toString();
         Operation operation = TelemetryManager.createOperation(VM, CREATE_VM);
-        final IAzureOperationTitle title = AzureOperationBundle.title("vm.create", model.getName());
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Creating virtual machine (" + model.getName() + ")...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             progressIndicator.setIndeterminate(true);
 

@@ -37,8 +37,6 @@ import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.toolkit.lib.common.operation.AzureOperationBundle;
-import com.microsoft.azure.toolkit.lib.common.operation.IAzureOperationTitle;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTask;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTaskManager;
 import com.microsoft.azuretools.authmanage.AuthMethodManager;
@@ -141,7 +139,7 @@ public class CreateDeploymentForm extends DeploymentBaseForm {
     @Override
     protected void doOKAction() {
         deploymentName = deploymentNameTextField.getText();
-        final IAzureOperationTitle title = AzureOperationBundle.title("arm|deployment.deploy", deploymentName);
+        final String title = "Deploying your azure resource (" + deploymentName + ")...";
         AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
             EventUtil.executeWithLog(TelemetryConstants.ARM, TelemetryConstants.CREATE_DEPLOYMENT, (operation -> {
                 SubscriptionDetail subs = (SubscriptionDetail) subscriptionCb.getSelectedItem();
@@ -223,12 +221,11 @@ public class CreateDeploymentForm extends DeploymentBaseForm {
         Map<SubscriptionDetail, List<Location>> subscription2Location =
                 AzureModel.getInstance().getSubscriptionToLocationMap();
         if (subscription2Location == null) {
-            final IAzureOperationTitle title = AzureOperationBundle.title("account|subscription.flush_cache");
-            AzureTaskManager.getInstance().runInModal(new AzureTask(project, title, false, () -> {
+            AzureTaskManager.getInstance().runInModal(new AzureTask(project, "Loading Available Locations...", false, () -> {
                 try {
                     AzureModelController.updateSubscriptionMaps(null);
                 } catch (Exception ex) {
-                    AzurePlugin.log("Error loading subscriptions", ex);
+                    AzurePlugin.log("Error loading locations", ex);
                 }
             }));
         }

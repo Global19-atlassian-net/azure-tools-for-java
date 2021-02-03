@@ -155,7 +155,7 @@ public class FileUtil {
      * @param targetZipFile ZIP file that will be created or overwritten
      */
     @AzureOperation(
-        name = "common|artifact.zip_files",
+        name = "archive files to [%s]",
         params = {"$targetZipFile.getName()"},
         type = AzureOperation.Type.TASK
     )

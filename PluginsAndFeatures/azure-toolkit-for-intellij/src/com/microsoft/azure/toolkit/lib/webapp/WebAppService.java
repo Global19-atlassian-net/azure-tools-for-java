@@ -45,7 +45,15 @@ public class WebAppService {
         return WebAppService.instance;
     }
 
-    @AzureOperation(name = "webapp.create_detail", params = {"$config.getName()"}, type = AzureOperation.Type.SERVICE)
+    @AzureOperation(
+        name = "create web app[%s, rg=%s] in subscription[%s]",
+        params = {
+            "$config.getName()",
+            "$config.getResourceGroup().name()",
+            "$config.getSubscription().displayName()"
+        },
+        type = AzureOperation.Type.SERVICE
+    )
     public WebApp createWebApp(final WebAppConfig config) {
         final WebAppSettingModel settings = convertConfig2Settings(config);
         settings.setCreatingNew(true);
@@ -64,7 +72,7 @@ public class WebAppService {
     }
 
     @AzureOperation(
-        name = "webapp.init_config",
+        name = "init web app configuration",
         type = AzureOperation.Type.TASK
     )
     public static WebAppSettingModel convertConfig2Settings(final WebAppConfig config) {

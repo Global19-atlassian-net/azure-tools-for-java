@@ -87,8 +87,8 @@ public class CreateFunctionHandler {
     // region Create or update Azure Functions
 
     @AzureOperation(
-        name = "function.create_detail",
-        params = {"@ctx.getAppName()"},
+        name = "create function app[%s, rg=%s] in subscription[%s]",
+        params = {"@ctx.getAppName()", "@ctx.getResourceGroup()", "@ctx.getSubscription()"},
         type = AzureOperation.Type.SERVICE
     )
     private FunctionApp createFunctionApp() {
@@ -121,7 +121,7 @@ public class CreateFunctionHandler {
     }
 
     @AzureOperation(
-        name = "function|ai.create",
+        name = "create application insights for function[%s]",
         params = {"@ctx.getAppName()"},
         type = AzureOperation.Type.SERVICE
     )
@@ -217,7 +217,7 @@ public class CreateFunctionHandler {
     }
 
     @AzureOperation(
-        name = "function.get.rg",
+        name = "get function app[%s] in resource group[%s]",
         params = {"@ctx.getAppName()", "@ctx.getResourceGroup()"},
         type = AzureOperation.Type.TASK
     )

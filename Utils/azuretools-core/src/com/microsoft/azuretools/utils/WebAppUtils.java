@@ -80,7 +80,7 @@ public class WebAppUtils {
 
     @NotNull
     @AzureOperation(
-        name = "webapp|artifact.prepare_ftp",
+        name = "prepare ftp connection for deployment",
         type = AzureOperation.Type.TASK
     )
     public static FTPClient getFtpConnection(PublishingProfile pp) throws IOException {
@@ -302,7 +302,7 @@ public class WebAppUtils {
      * @param progressIndicator
      */
     @AzureOperation(
-        name = "webapp|artifact.upload",
+        name = "deploy artifact[%s] to app[%s]",
         params = {"$artifact.getName()", "$deployTarget.name()"},
         type = AzureOperation.Type.SERVICE
     )
@@ -360,7 +360,7 @@ public class WebAppUtils {
     }
 
     @AzureOperation(
-        name = "webapp|artifact.zip",
+        name = "archive artifact[%s] to temporary zip file for deployment",
         params = {"$artifact.getName()"},
         type = AzureOperation.Type.TASK
     )
@@ -466,7 +466,7 @@ public class WebAppUtils {
     }
 
     @AzureOperation(
-        name = "webapp.delete_detail",
+        name = "delete web app[%s]",
         params = {"$webAppDetails.webApp.name()"},
         type = AzureOperation.Type.SERVICE
     )
@@ -485,7 +485,7 @@ public class WebAppUtils {
     }
 
     @AzureOperation(
-        name = "webapp|artifact.update",
+        name = "update artifact of web app[%s]",
         params = {"$webApp.name()"},
         type = AzureOperation.Type.SERVICE
     )
@@ -517,7 +517,7 @@ public class WebAppUtils {
     }
 
     @AzureOperation(
-        name = "webapp|artifact.upload",
+        name = "upload artifact[%s] to web app[%s]",
         params = {"$fileName", "$webApp.name()"},
         type = AzureOperation.Type.SERVICE
     )
@@ -539,7 +539,7 @@ public class WebAppUtils {
     }
 
     @AzureOperation(
-        name = "webapp|artifact.upload_ftp",
+        name = "upload file to ftp server",
         type = AzureOperation.Type.TASK
     )
     private static int uploadFileToFtp(FTPClient ftp, String path, InputStream stream, IProgressIndicator indicator) {

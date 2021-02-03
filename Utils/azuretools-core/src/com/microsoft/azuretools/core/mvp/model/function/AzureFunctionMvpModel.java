@@ -56,7 +56,7 @@ public class AzureFunctionMvpModel {
 
     @NotNull
     @AzureOperation(
-        name = "function.get_detail",
+        name = "get detail info of function app[%s] in subscription[%s]",
         params = {"$id|uri_to_name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -71,7 +71,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.get_detail",
+        name = "get detail info of function app[%s] in subscription[%s]",
         params = {"$name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -79,14 +79,18 @@ public class AzureFunctionMvpModel {
         return getFunctionAppsClient(sid).getByResourceGroup(resourceGroup, name);
     }
 
-    @AzureOperation(name = "function.delete", params = {"$appId|uri_to_name", "$sid"}, type = AzureOperation.Type.SERVICE)
+    @AzureOperation(
+        name = "delete function app[%s] in subscription[%s]",
+        params = {"$appId|uri_to_name", "$sid"},
+        type = AzureOperation.Type.SERVICE
+    )
     public void deleteFunction(String sid, String appId) {
         getFunctionAppsClient(sid).deleteById(appId);
         subscriptionIdToFunctionApps.remove(sid);
     }
 
     @AzureOperation(
-        name = "function.restart",
+        name = "restart function app[%s] in subscription[%s]",
         params = {"$appId|uri_to_name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -95,7 +99,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.start",
+        name = "start function app[%s] in subscription[%s]",
         params = {"$appId|uri_to_name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -104,7 +108,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.stop",
+        name = "stop function app[%s] in subscription[%s]",
         params = {"$appId|uri_to_name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -116,7 +120,7 @@ public class AzureFunctionMvpModel {
      * List app service plan by subscription id and resource group name.
      */
     @AzureOperation(
-        name = "appservice|plan.list.subscription|rg",
+        name = "get all service plans in resource group[%s] of subscription[$s]",
         params = {"$group", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -133,7 +137,7 @@ public class AzureFunctionMvpModel {
      * List app service plan by subscription id.
      */
     @AzureOperation(
-        name = "appservice|plan.list.subscription",
+        name = "get all service plans in subscription[$s]",
         params = {"$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -148,7 +152,7 @@ public class AzureFunctionMvpModel {
      * @return list of Function App
      */
     @AzureOperation(
-        name = "function.list.subscription|selected",
+        name = "get all function apps in selected subscription(s)",
         type = AzureOperation.Type.SERVICE
     )
     public List<ResourceEx<FunctionApp>> listAllFunctions(final boolean forceReload) {
@@ -169,7 +173,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function|envelops.list",
+        name = "get all envelops of function app[%s] in subscription[$s]",
         params = {"$id|uri_to_name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -181,7 +185,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.get_publishing_profile",
+        name = "get publishing profile of function app[%s] with secret",
         params = {"$functionAppId|uri_to_name"},
         type = AzureOperation.Type.SERVICE
     )
@@ -191,7 +195,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.update_setting",
+        name = "update settings of function app[%s]",
         params = {"$functionAppId|uri_to_name"},
         type = AzureOperation.Type.SERVICE
     )
@@ -205,7 +209,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.get_tiers",
+        name = "get all available pricing tiers for function apps",
         type = AzureOperation.Type.TASK
     )
     public List<PricingTier> listFunctionPricingTier() {
@@ -230,7 +234,7 @@ public class AzureFunctionMvpModel {
     }
 
     @AzureOperation(
-        name = "function.turn_on_logs",
+        name = "turn on application log for function app[%s]",
         params = {"$functionApp.name()"},
         type = AzureOperation.Type.TASK
     )
@@ -248,7 +252,7 @@ public class AzureFunctionMvpModel {
      */
     @NotNull
     @AzureOperation(
-        name = "function.list.subscription",
+        name = "get all function apps in subscription[%s]",
         params = {"$subscriptionId"},
         type = AzureOperation.Type.SERVICE
     )
@@ -268,6 +272,11 @@ public class AzureFunctionMvpModel {
         return functions;
     }
 
+    @AzureOperation(
+        name = "get function apps client for subscription[%s]",
+        params = {"$sId"},
+        type = AzureOperation.Type.TASK
+    )
     private static FunctionApps getFunctionAppsClient(String sid) {
         return AuthMethodManager.getInstance().getAzureClient(sid).appServices().functionApps();
     }

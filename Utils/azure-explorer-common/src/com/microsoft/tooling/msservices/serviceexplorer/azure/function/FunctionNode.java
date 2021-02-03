@@ -28,8 +28,6 @@ import com.microsoft.azure.management.appservice.FunctionEnvelope;
 import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.toolkit.lib.common.exception.AzureToolkitRuntimeException;
 import com.microsoft.azure.toolkit.lib.common.operation.AzureOperation;
-import com.microsoft.azure.toolkit.lib.common.operation.AzureOperationBundle;
-import com.microsoft.azure.toolkit.lib.common.operation.IAzureOperationTitle;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTask;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTaskManager;
 import com.microsoft.tooling.msservices.components.DefaultLoader;
@@ -72,17 +70,16 @@ public class FunctionNode extends Node {
     protected void loadActions() {
         addAction("Trigger Function", new WrappedTelemetryNodeActionListener(FUNCTION, TRIGGER_FUNCTION, new NodeActionListener() {
             @Override
-            @AzureOperation(name = "function|trigger.start", type = AzureOperation.Type.ACTION)
+            @AzureOperation(name = "trigger function app", type = AzureOperation.Type.ACTION)
             protected void actionPerformed(NodeActionEvent e) {
-                final IAzureOperationTitle title = AzureOperationBundle.title("function|trigger.start");
-                AzureTaskManager.getInstance().runInBackground(new AzureTask(getProject(), title, false, () -> trigger()));
+                AzureTaskManager.getInstance().runInBackground(new AzureTask(getProject(), "Triggering Function", false, () -> trigger()));
             }
         }));
         // todo: find whether there is sdk to enable/disable trigger
     }
 
     @AzureOperation(
-        name = "function|trigger.start.detail",
+        name = "trigger function[%s]",
         params = {"@functionApp.name()"},
         type = AzureOperation.Type.SERVICE
     )
@@ -114,7 +111,7 @@ public class FunctionNode extends Node {
 
     // Refers https://docs.microsoft.com/mt-mt/Azure/azure-functions/functions-manually-run-non-http
     @AzureOperation(
-        name = "function|trigger.start_timer",
+        name = "start timer trigger for function[%s]",
         params = {"@functionApp.name()"},
         type = AzureOperation.Type.TASK
     )
@@ -131,7 +128,7 @@ public class FunctionNode extends Node {
     }
 
     @AzureOperation(
-        name = "function|trigger.start_event",
+        name = "start event hub trigger for function[%s]",
         params = {"@functionApp.name()"},
         type = AzureOperation.Type.TASK
     )
@@ -149,7 +146,7 @@ public class FunctionNode extends Node {
     }
 
     @AzureOperation(
-        name = "function|trigger.start_http",
+        name = "start http trigger for function[%s]",
         params = {"@functionApp.name()"},
         type = AzureOperation.Type.TASK
     )

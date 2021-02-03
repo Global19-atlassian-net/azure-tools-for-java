@@ -48,9 +48,10 @@ public class AzureOperationUtils {
 
     public static String getOperationTitle(@NotNull AzureOperationRef ref) {
         final AzureOperation annotation = AzureOperationUtils.getAnnotation(ref);
-        final String name = annotation.name();
-        final String[] params = Arrays.stream(annotation.params()).map(e -> interpretExpression(e, ref)).toArray(String[]::new);
-        return AzureOperationBundle.title(name, (Object[]) params).toString();
+        final String messageTemplate = annotation.name();
+        final String[] parameters = annotation.params();
+        final String[] params = Arrays.stream(parameters).map(expression -> interpretExpression(expression, ref)).toArray(String[]::new);
+        return MessageFormat.format(String.format(messageTemplate, (Object[]) params), params);
     }
 
     private static String interpretExpression(String expression, AzureOperationRef ref) {

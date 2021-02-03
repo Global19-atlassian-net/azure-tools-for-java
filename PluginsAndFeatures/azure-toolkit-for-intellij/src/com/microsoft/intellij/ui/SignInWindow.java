@@ -37,8 +37,6 @@ import com.microsoft.azure.auth.AzureAuthHelper;
 import com.microsoft.azure.auth.AzureTokenWrapper;
 import com.microsoft.azure.toolkit.intellij.common.AzureDialog;
 import com.microsoft.azure.toolkit.lib.common.exception.AzureToolkitRuntimeException;
-import com.microsoft.azure.toolkit.lib.common.operation.AzureOperationBundle;
-import com.microsoft.azure.toolkit.lib.common.operation.IAzureOperationTitle;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTask;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTaskManager;
 import com.microsoft.azuretools.adauth.StringUtils;
@@ -182,8 +180,7 @@ public class SignInWindow extends AzureDialogWrapper {
     }
 
     public Single<AuthMethodDetails> login() {
-        final IAzureOperationTitle title = AzureOperationBundle.title("account.sign_in");
-        final AzureTask<AuthMethodDetails> task = new AzureTask<>(null, title, false, () -> {
+        final AzureTask<AuthMethodDetails> task = new AzureTask<>(null, "Signing in to Azure...", false, () -> {
             final ProgressIndicator indicator = ProgressManager.getInstance().getProgressIndicator();
             indicator.setIndeterminate(true);
             return this.doLogin();

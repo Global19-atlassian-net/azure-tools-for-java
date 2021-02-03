@@ -75,7 +75,7 @@ public class AzureMvpModel {
      * @return Instance of Subscription
      */
     @AzureOperation(
-        name = "account|subscription.get_detail",
+        name = "load details of subscription[%s]",
         params = {"$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -96,7 +96,7 @@ public class AzureMvpModel {
      * @return List of Subscription instances
      */
     @AzureOperation(
-        name = "account|subscription.get_detail.selected",
+        name = "load details of all selected subscriptions",
         type = AzureOperation.Type.SERVICE
     )
     public List<Subscription> getSelectedSubscriptions() {
@@ -125,7 +125,7 @@ public class AzureMvpModel {
      * @return
      */
     @AzureOperation(
-        name = "arm|rg.list.subscription|selected",
+        name = "list all resource groups of selected subscription",
         type = AzureOperation.Type.SERVICE
     )
     public List<ResourceEx<ResourceGroup>> getResourceGroups(boolean forceUpdate) throws CanceledByUserException {
@@ -155,7 +155,7 @@ public class AzureMvpModel {
      * @return
      */
     @AzureOperation(
-        name = "arm|rg.delete",
+        name = "delete resource group[%s]",
         params = {"$rgName"},
         type = AzureOperation.Type.SERVICE
     )
@@ -172,7 +172,7 @@ public class AzureMvpModel {
      * @return List of ResourceGroup instances
      */
     @AzureOperation(
-        name = "arm|rg.list.subscription",
+        name = "list all resource groups of subscription[%s]",
         params = {"$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -188,7 +188,7 @@ public class AzureMvpModel {
      * Get Resource Group by Subscription ID and Resource Group name.
      */
     @AzureOperation(
-        name = "arm|rg.get.subscription",
+        name = "load details of resource group[%s] in subscription[%s]",
         params = {"$name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -207,7 +207,7 @@ public class AzureMvpModel {
     }
 
     @AzureOperation(
-        name = "deployment.list.subscription|selected",
+        name = "list all deployments of selected subscriptions",
         type = AzureOperation.Type.SERVICE
     )
     public List<Deployment> listAllDeployments() {
@@ -226,7 +226,7 @@ public class AzureMvpModel {
     }
 
     @AzureOperation(
-        name = "deployment.list.subscription",
+        name = "list all deployments of subscription[%s]",
         params = {"$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -243,7 +243,7 @@ public class AzureMvpModel {
      * @return
      */
     @AzureOperation(
-        name = "deployment.list.subscription|rg",
+        name = "list all deployments of resource group[%s] in subscription[%s]",
         params = {"$name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -264,7 +264,7 @@ public class AzureMvpModel {
      * @return List of Location instances
      */
     @AzureOperation(
-        name = "common|region.list.subscription",
+        name = "load all locations of subscription[%s]",
         params = {"$sid"},
         type = AzureOperation.Type.SERVICE
     )
@@ -286,7 +286,7 @@ public class AzureMvpModel {
      * @return List of PricingTier instances.
      */
     @AzureOperation(
-        name = "common.list_tiers",
+        name = "list all available pricing tiers",
         params = {"$name", "$sid"},
         type = AzureOperation.Type.SERVICE
     )

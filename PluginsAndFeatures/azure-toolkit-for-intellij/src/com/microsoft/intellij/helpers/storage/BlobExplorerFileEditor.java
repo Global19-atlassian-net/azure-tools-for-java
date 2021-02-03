@@ -38,8 +38,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
-import com.microsoft.azure.toolkit.lib.common.operation.AzureOperationBundle;
-import com.microsoft.azure.toolkit.lib.common.operation.IAzureOperationTitle;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTask;
 import com.microsoft.azure.toolkit.lib.common.task.AzureTaskManager;
 import com.microsoft.azuretools.authmanage.AuthMethodManager;
@@ -321,8 +319,7 @@ public class BlobExplorerFileEditor implements FileEditor, TelemetryProperties {
     public void fillGrid() {
         setUIState(true);
 
-        final IAzureOperationTitle title = AzureOperationBundle.title("blob.list", blobContainer.getName());
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Loading blobs...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             try {
                 progressIndicator.setIndeterminate(true);
@@ -526,8 +523,7 @@ public class BlobExplorerFileEditor implements FileEditor, TelemetryProperties {
             if (isConfirm) {
                 setUIState(true);
 
-                final IAzureOperationTitle title = AzureOperationBundle.title("blob.delete", blobItem.getName());
-                AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+                AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Deleting blob...", false, () -> {
                     final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
                     progressIndicator.setIndeterminate(true);
                     try {
@@ -587,8 +583,7 @@ public class BlobExplorerFileEditor implements FileEditor, TelemetryProperties {
         final BlobFile fileSelection = getFileSelection();
 
         if (fileSelection != null) {
-            final IAzureOperationTitle title = AzureOperationBundle.title("blob.download", targetFile, blobContainer.getName());
-            AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+            AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Downloading blob...", false, () -> {
                 final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
                 try {
                     progressIndicator.setIndeterminate(false);
@@ -696,8 +691,7 @@ public class BlobExplorerFileEditor implements FileEditor, TelemetryProperties {
     }
 
     private void uploadFile(final String path, final File selectedFile) {
-        final IAzureOperationTitle title = AzureOperationBundle.title("blob.upload", selectedFile, blobContainer.getName());
-        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, title, false, () -> {
+        AzureTaskManager.getInstance().runInBackground(new AzureTask(project, "Uploading blob...", false, () -> {
             final ProgressIndicator progressIndicator = ProgressManager.getInstance().getProgressIndicator();
             try {
                 final BlobDirectory blobDirectory = directoryQueue.peekLast();
